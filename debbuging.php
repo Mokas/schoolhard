@@ -1,16 +1,30 @@
 <?php
+include "classes\db.php";
+$hash = "$2y$10\$WYEh4h.tS3E.4RGXWT2K.uQum";
+echo $hash;
+$password = "you1";
 
-require "classes\db.php";
+$encryptedpasss = password_hash($password, PASSWORD_DEFAULT);
+echo $encryptedpasss."</br>";
+
+if(password_verify($password, $hash)){
+echo "sdasdasrue";
+}
+ else {
+     echo "fasdasdalse";
+}
+/*
+    $PDO = get_PDO();
     
-$username = "test1";
-$password = "test2";
-$email = "testemail";
+    $loginStatement = $PDO->prepare("SELECT id,uname,password FROM users WHERE uname=:USERNAME");
+    $loginStatement->bindParam("USERNAME", $CleanUsername, PDO::PARAM_STR);
+    $loginStatement->execute();
+    $returnedObject = $loginStatement->fetch();
+    echo $returnedObject["password"]."</br>";
+    echo $CleanPassword."</br>";
 
-$PDO = get_PDO();
-
-$statement = $PDO->prepare("select count(id) from users where uname=:username OR email=:email");
-$statement->bindParam(":username", $username);
-$statement->bindParam(":email", $email);
-$statement->execute();
-
-echo ($statement->fetchColumn());
+   if(password_verify($CleanPassword, $hash)){
+       return "test1";
+        return $returnedObject['id'];
+    }
+*/

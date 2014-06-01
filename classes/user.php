@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 require_once 'db.php';
 
 $PDO = get_PDO();
@@ -37,6 +39,13 @@ function isUserInDb($userDataArray)
     }
 }
 
+//Encrypts passwords
+function encryptPassword($CleanPassword)
+{
+    $encrypted_Password = password_hash($CleanPassword, PASSWORD_DEFAULT);
+    return $encrypted_Password;
+}
+
 function addUser($userDataArray)
 {
         global $PDO;
@@ -49,11 +58,30 @@ function addUser($userDataArray)
         $statement->execute();
 }
 
-function checkLogin()
-{
-    
+function checkUserPass($CleanUsername, $CleanPassword){
+    global $PDO;
+    $loginStatement = $PDO->prepare("SELECT id,uname,password FROM users WHERE uname=:USERNAME");
+    $loginStatement->bindParam("USERNAME", $CleanUsername, PDO::PARAM_STR);
+    $loginStatement->execute();
+    $returnedObject = $loginStatement->fetch();
+    if(password_verify($CleanPassword, $returnedObject["password"])){
+        return $returnedObject['id'];
+    }
+    else{
+        return null;
+    }
 }
 
+function UserLogin($CleanU_ID, $CleanUsername){
+    $_SESSION["validated"] = true;
+    $_SESSION["USERNAME"] = $CleanUsername;
+    $_SESSION["U_ID"] = $CleantUID;
+}
+
+function UserLogOut()
+{
+    session_destroy();
+}
 
 class userData{
     public function __construct($username, $password, $email, $fname, $lname) {
@@ -61,3 +89,4 @@ class userData{
         return $userDataArray;
     }
 }
+

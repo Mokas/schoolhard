@@ -30,7 +30,26 @@
                     <textarea rows="10" cols="50" name="summary">
                         
                     </textarea>
-                    <input type="submit" value="Submit">
+                    <table>
+                        <tr>
+                            <td>
+                            <input type="radio" name="subject_id" value="1">Maths
+                            </td>
+                            <td>
+                            <input type="radio" name="subject_id" value="2">English
+                            </td>
+                            <td>
+                            <input type="radio" name="subject_id" value="3">Engineering
+                            </td>
+                            <td>
+                            <input type="radio" name="subject_id" value="4">Physics
+                            </td>
+                            <td>
+                            <input type="radio" name="subject_id" value="5">P.E
+                            </td>
+                            <input type="submit" value="Submit">
+                        </tr>
+                    </table>
                 </fieldset>
             </form>
         </div>
@@ -44,8 +63,15 @@
                 </fieldset>
             </form>
         </div>
+
         <?php
+            if(!empty($_SESSION['validated']) && $_SESSION['validated']){
+                echo ("LOGGED IN <fieldset><form action=\"logout.php\" method=\"post\"> <input type=\"submit\" value=\"Logout\"> </form></fieldset>");
+            }
             
+           else{
+                echo "NOT LOGGED IN";
+           }
         ?>
     </body>
 </html>
