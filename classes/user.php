@@ -5,15 +5,7 @@ require_once 'db.php';
 
 $PDO = get_PDO();
 
-function getUserDataInArray(){
-    $username = htmlspecialchars(filter_input(INPUT_POST, "username"));
-    $password = htmlspecialchars(filter_input(INPUT_POST, "password"));
-    $email = htmlspecialchars(filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL));
-    $fname = htmlspecialchars(filter_input(INPUT_POST, "fname"));
-    $lname = htmlspecialchars(filter_input(INPUT_POST, "lname"));
-    
-    return $userArray = array("username" => $username, "password" => $password , "email" => $email, "fname" => $fname, "lname" => $lname);
-   } 
+
 //Asks if db has user and returns false if it does
 function isUserInDb($userDataArray)
 {
