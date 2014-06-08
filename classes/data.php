@@ -123,16 +123,44 @@ function getTitleContentU_IDById($cleanId){
     return $arrayOfTitleAndPost;
 }
 
-//Returns an array of title AND U_ID that exist in the database.
-function getTextsBySubject_ID($cleanSubjectID){
+//Returns an two dimensional array that include title AND U_ID that exist in the database.
+function getTextTitleBySubject_ID($cleanSubjectID){
     global $PDO;
     
-    $stmnt = $PDO->prepare("SELECT title, U_ID FROM summaries WHERE subject_id=:cleanSubjectID");
+    $stmnt = $PDO->prepare("SELECT id, title, U_ID FROM summaries WHERE subject_id=:cleanSubjectID");
     $stmnt->bindParam(":cleanSubjectID", $cleanSubjectID);
     $stmnt->execute();
-    $returnedObject = $stmnt->fetch();
-    $arrayOfTitleAndU_ID = array();
-    $arrayOfTitleAndU_ID["TITLE"] = $returnedObject["title"];
-    $arrayOfTitleAndU_ID["U_ID"] = $returnedObject["U_ID"];
-    return $arrayOfTitleAndU_ID;
+    $i = 0;
+    $TwoDarrayOfTitleAndU_ID[] = array();
+    while($arrayOneDArray = $stmnt->fetch()){
+        $TwoDarrayOfTitleAndU_ID[$i]["ID"] = $arrayOneDArray["id"];
+        $TwoDarrayOfTitleAndU_ID[$i]["TITLE"] = $arrayOneDArray["title"];
+        $TwoDarrayOfTitleAndU_ID[$i]["U_ID"] = $arrayOneDArray["U_ID"];
+        
+        $i++;
+    }
+    return $TwoDarrayOfTitleAndU_ID;
+}
+
+//Returns 2D Array containing POST, TITLE, UID from summaries tha include the search query
+function searchPost($cleanSearchTerm){
+    global $PDO;
+    
+    $stmnt = $PDO->prepare("SELECT id, title, subject_id, U_ID from summaries WHERE INSTR(content, :searchTerm)");
+    $stmnt->bindParam(":searchTerm", $cleanSearchTerm);
+    $stmnt->execute();
+    $i = 0;
+    $TwoDarray[] = array();
+    while($arrayOneDArray = $stmnt->fetch()){
+        $TwoDarray[$i]["ID"] = $arrayOneDArray["id"];
+        $TwoDarray[$i]["TITLE"] = $arrayOneDArray["title"];
+        $TwoDarray[$i]["SUBJECT_ID"] = $arrayOneDArray["subject_id"];
+        $TwoDarray[$i]["U_ID"] = $arrayOneDArray["U_ID"];
+        $i++;
+    }
+    if(!empty($TwoDarray)){
+    return $TwoDarray;
+    }  else {
+    return false;
+    }
 }

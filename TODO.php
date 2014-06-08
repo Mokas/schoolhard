@@ -7,15 +7,16 @@
  */
 
 /*
- * POST
- * RANK
+ * RANK MAYBE NOT
  * COMMENT
  * ADD MORE SECURITY TO BINDPARAM
  * FIX DATA INPUT LENGTH IN EVERYTHING
  * INDEX.php Logged in OR NOT optimization
  * ADD MAX LENGTH TO THE DESCRIPTION BOX
  * ADD VISUAL <3
+ * READ
 */
 
 
-//READER->SUBJECT->Fixa det så att alla texter kommer från 1 subject_id
+//READER-> SEARCH
+//FIX PROBLEM WITH SUBJECTIDS
