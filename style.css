@@ -8,7 +8,27 @@ html{
     border-radius: 10px;
 }
 
+#post_read{
+    text-align: center;
+    border: 1px solid white;
+    display: inline-block;
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
 
+#post_read > h6{
+    margin-top: -3%;
+}
+
+#explore_subjects{
+    text-align: center;
+    border: 1px solid white;
+    display: inline-block;
+    width: 40%;
+    margin-left: 30%;
+    margin-right: 30%;
+}
     
 /*
 To change this license header, choose License Headers in Project Properties.

@@ -1,6 +1,5 @@
 <?php
 
-session_start();
 require_once 'db.php';
 
 $PDO = get_PDO();
@@ -41,38 +40,56 @@ function encryptPassword($CleanPassword)
 function addUser($userDataArray)
 {
         global $PDO;
-        $statement = $PDO->prepare("INSERT INTO users (uname, password, fname, lname, email, confirmed_email) VALUES (:username, :password, :fname, :lname, :email, 0)");
+        $statement = $PDO->prepare("INSERT INTO users (uname, password, fname, lname, email, confirmed_email, ip_address) VALUES (:username, :password, :fname, :lname, :email, 0, :ip_address)");
         $statement->bindParam(":username", $userDataArray["username"]);
         $statement->bindParam(":password", $userDataArray["password"]);
         $statement->bindParam(":fname", $userDataArray["fname"]);
         $statement->bindParam(":lname", $userDataArray["lname"]);
         $statement->bindParam(":email", $userDataArray["email"]);
+        $statement->bindParam(":ip_address", $userDataArray["ip_address"]);
         $statement->execute();
 }
 
 function checkUserPass($CleanUsername, $CleanPassword){
     global $PDO;
     $loginStatement = $PDO->prepare("SELECT id,uname,password FROM users WHERE uname=:USERNAME");
-    $loginStatement->bindParam("USERNAME", $CleanUsername, PDO::PARAM_STR);
+    $loginStatement->bindParam(":USERNAME", $CleanUsername, PDO::PARAM_STR);
     $loginStatement->execute();
     $returnedObject = $loginStatement->fetch();
     if(password_verify($CleanPassword, $returnedObject["password"])){
-        return $returnedObject['id'];
+        return true;
     }
     else{
-        return null;
+        return false;
     }
+}
+function getUserId($cleanUsername){
+    global $PDO;
+    $uidStatment = $PDO->prepare("SELECT id FROM users WHERE uname=:USERNAME");
+    $uidStatment->bindParam("USERNAME", $cleanUsername);
+    $uidStatment->execute();
+    $returnedObject = $uidStatment->fetch();
+    return $returnedObject["id"];
 }
 
 function UserLogin($CleanU_ID, $CleanUsername){
     $_SESSION["validated"] = true;
     $_SESSION["USERNAME"] = $CleanUsername;
-    $_SESSION["U_ID"] = $CleantUID;
+    $_SESSION["U_ID"] = $CleanU_ID;
 }
 
 function UserLogOut()
 {
     session_destroy();
+}
+
+function getUserById($cleanID){
+    global $PDO;
+    $unameStatment = $PDO->prepare("SELECT uname FROM users WHERE id=:id");
+    $unameStatment->bindParam("id", $cleanID);
+    $unameStatment->execute();
+    $returnedObject = $unameStatment->fetch();
+    return $returnedObject["uname"];
 }
 
 class userData{
